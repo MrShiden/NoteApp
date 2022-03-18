@@ -8,10 +8,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.joncabdev.noteapp.data.NotesDataSource
+import com.joncabdev.noteapp.model.Note
+import com.joncabdev.noteapp.ui.screens.NoteScreen
+import com.joncabdev.noteapp.ui.screens.NoteViewModel
 import com.joncabdev.noteapp.ui.theme.NoteAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +32,24 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
+                    NotesApp()
+
+
+
                 }
             }
         }
     }
+}
+
+@Composable
+fun NotesApp(noteViewModel: NoteViewModel = viewModel()){
+    val notes = noteViewModel.getAllNotes()
+    NoteScreen(notes = notes, onRemoveNote = {
+        noteViewModel.removeNote(it)
+    }, onAddNote = {
+        noteViewModel.addNote(it)
+    })
 }
 
 
@@ -34,6 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     NoteAppTheme {
+        NoteScreen(notes = NotesDataSource().loadNotes(), onRemoveNote = {}, onAddNote = {})
 
     }
 }
