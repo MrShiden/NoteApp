@@ -27,6 +27,7 @@ import com.joncabdev.noteapp.components.NoteButton
 import com.joncabdev.noteapp.components.NoteInputText
 import com.joncabdev.noteapp.data.NotesDataSource
 import com.joncabdev.noteapp.model.Note
+import com.joncabdev.noteapp.util.formatDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -127,7 +128,7 @@ fun NoteRow(
                 style = MaterialTheme.typography.subtitle2)
             Text(text = note.description, style = MaterialTheme.typography.subtitle1)
             Text(
-                text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE d MMM")),
+                text = formatDate(note.entryDate.time),
                 style = MaterialTheme.typography.caption
             )
 
